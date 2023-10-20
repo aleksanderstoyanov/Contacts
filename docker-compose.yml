@@ -1,0 +1,29 @@
+version: '3.3'
+services:
+  sqlserver:
+      container_name: sqlserver
+      environment:
+        - ACCEPT_EULA=Y
+        - MSSQL_SA_PASSWORD=myStrongPassword12#
+      ports:
+        - 1433:1433
+      deploy:
+          resources:
+            reservations:
+                cpus: '2'
+                memory: 2GB
+      volumes:
+        - sqldata:/var/opt/mssql
+      image: "mcr.microsoft.com/mssql/server"
+  webapp:
+      container_name: contacts
+      domainname: sasho123
+      ports:
+        - 80:80
+      image: "sasho123contactsacr.azurecr.io/contacts"
+volumes:
+    sqldata:
+         driver: azure_file
+         driver_opts: 
+            share_name: sql-volumes123
+            storage_account_name: sasho123contactsstorage
